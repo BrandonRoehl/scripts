@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo 'Updating git repositories for vim pathogen plugins'
 currentPath=$PWD
 dotdir=$(readlink ~/.scripts)
