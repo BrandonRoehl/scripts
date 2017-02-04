@@ -4,11 +4,5 @@ currentPath=$PWD
 dotdir=$(readlink ~/.zshrc)
 cd ${dotdir/\/zshrc/}
 brew list > installed.txt
-git submodule foreach \
-        '
-        git clean -fdx;
-        git reset --hard;
-        git checkout master -f;
-        git pull origin master -f;
-        '
+git submodule foreach 'git pull origin master -f'
 cd $currentPath
