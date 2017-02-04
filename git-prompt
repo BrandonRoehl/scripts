@@ -1,25 +1,44 @@
 #!/usr/bin/env zsh
 autoload -U colors
 colors
-# Modify the colors and symbols in these variables as desired.
-GIT_PROMPT_OPEN="%{$fg_bold[white]%}(%{$reset_color%}"
-GIT_PROMPT_SYMBOL="\u2387 "
-GIT_PROMPT_AHEAD="\u2191NUM"
-GIT_PROMPT_BEHIND="\u2193NUM"
-GIT_PROMPT_MERGING="\u2211"
-GIT_PROMPT_COLOR="%{$fg[red]%}"
-GIT_PROMPT_AHEAD_COLOR="%{$fg[green]%}"
-GIT_PROMPT_BEHIND_COLOR="%{$fg[yellow]%}"
-GIT_PROMPT_MERGING_COLOR="%{$fg[magenta]%}"
-GIT_PROMPT_MODIFIED="%{$fg[red]%}\u2717%{$reset_color%}"
-GIT_PROMPT_STAGED="%{$fg[green]%}\u2713%{$reset_color%}"
-GIT_PROMPT_UNTRACKED="%{$fg[yellow]%}\u2026%{$reset_color%}"
-GIT_PROMPT_CLOSE="%{$fg_bold[white]%})%{$reset_color%}"
 
 # Show different symbols as appropriate for various Git repository states
 GIT_WHERE="$(git symbolic-ref -q HEAD 2> /dev/null \
     || git name-rev --name-only --no-undefined --always HEAD 2> /dev/null)"
 if [[ -n "$GIT_WHERE" ]]; then
+    is_zsh=0
+    is_ubuntu=0
+    while [ $# -ne 0 ]
+    do
+        case "$1" in
+            '--zsh')
+                is_zsh=1
+                ;;
+            '--ubuntu')
+                is_ubuntu=1
+                ;;
+        esac
+        shift
+    done
+    # Modify the colors and symbols in these variables as desired.
+    GIT_PROMPT_OPEN="%{$fg_bold[white]%}(%{$reset_color%}"
+    GIT_PROMPT_SYMBOL="\u2387 "
+    GIT_PROMPT_AHEAD="\u2191NUM"
+    GIT_PROMPT_BEHIND="\u2193NUM"
+    GIT_PROMPT_MERGING="\u2211"
+    GIT_PROMPT_COLOR="%{$fg[red]%}"
+    GIT_PROMPT_AHEAD_COLOR="%{$fg[green]%}"
+    GIT_PROMPT_BEHIND_COLOR="%{$fg[yellow]%}"
+    GIT_PROMPT_MERGING_COLOR="%{$fg[magenta]%}"
+    GIT_PROMPT_MODIFIED="%{$fg[red]%}\u2717%{$reset_color%}"
+    GIT_PROMPT_STAGED="%{$fg[green]%}\u2713%{$reset_color%}"
+    GIT_PROMPT_UNTRACKED="%{$fg[yellow]%}\u2026%{$reset_color%}"
+    GIT_PROMPT_CLOSE="%{$fg_bold[white]%})%{$reset_color%}"
+    if [ $is_ubuntu -eq 1 ]
+    then
+        GIT_PROMPT_SYMBOL="$GIT_PROMPT_SYMBOL "
+    fi
+
     GIT_COLOR="$GIT_PROMPT_COLOR"
     # Compose this value via multiple conditional appends.
     GIT_STATE=""
@@ -62,14 +81,6 @@ if [[ -n "$GIT_WHERE" ]]; then
         GIT_STRING="$GIT_STRING $GIT_STATE"
     fi
 
-    is_zsh=0
-    while [ $# -ne 0 ]
-    do
-        if [ $1 = "--zsh" ]; then
-            is_zsh=1
-        fi
-        shift
-    done
     if [ $is_zsh -eq 1 ]; then
         echo "$GIT_STRING$GIT_PROMPT_CLOSE"
     else
