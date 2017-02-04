@@ -1,8 +1,9 @@
 #!/bin/bash
-echo 'Updating git repositories for vim pathogen plugins'
+echo 'Updating git repositories'
 currentPath=$PWD
 dotdir=$(readlink ~/.zshrc)
 cd ${dotdir/\/zshrc/}
 brew list > installed.txt
 git submodule foreach 'git pull origin master -f'
 cd $currentPath
+universe update
