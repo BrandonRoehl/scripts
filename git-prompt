@@ -3,7 +3,12 @@ autoload -U colors
 colors
 # Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_OPEN="%{$fg_bold[white]%}(%{$reset_color%}"
-GIT_PROMPT_SYMBOL="\u2387"
+if [ uname = "Darwin" ]
+then
+    GIT_PROMPT_SYMBOL="\u2387 "
+else
+    GIT_PROMPT_SYMBOL="\u2387  "
+fi
 GIT_PROMPT_AHEAD="\u2191NUM"
 GIT_PROMPT_BEHIND="\u2193NUM"
 GIT_PROMPT_MERGING="\u2211"
@@ -57,7 +62,7 @@ if [[ -n "$GIT_WHERE" ]]; then
     fi
 
     # Compose the final git status line
-    GIT_STRING="$GIT_PROMPT_OPEN$GIT_COLOR$GIT_PROMPT_SYMBOL ${GIT_WHERE#(refs/heads/|tags/)}%{$reset_color%}"
+    GIT_STRING="$GIT_PROMPT_OPEN$GIT_COLOR$GIT_PROMPT_SYMBOL${GIT_WHERE#(refs/heads/|tags/)}%{$reset_color%}"
     if [[ -n $GIT_STATE ]]; then
         GIT_STRING="$GIT_STRING $GIT_STATE"
     fi
