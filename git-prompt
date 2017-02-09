@@ -7,34 +7,35 @@ GIT_WHERE="$(git symbolic-ref -q HEAD 2> /dev/null \
     || git name-rev --name-only --no-undefined --always HEAD 2> /dev/null)"
 if [[ -n "$GIT_WHERE" ]]; then
     is_zsh=0
-    is_ubuntu=0
+    offset=0
     while [ $# -ne 0 ]
     do
         case "$1" in
             '--zsh')
                 is_zsh=1
                 ;;
-            '--ubuntu')
-                is_ubuntu=1
+            '-s')
+                shift
+                offset=$1
                 ;;
         esac
         shift
     done
     # Modify the colors and symbols in these variables as desired.
-    GIT_PROMPT_OPEN="%{$fg_bold[white]%}(%{$reset_color%}"
+    GIT_PROMPT_OPEN="%{$fg_bold[yellow]%}[%{$reset_color%}"
     GIT_PROMPT_SYMBOL="\u2387 "
     GIT_PROMPT_AHEAD="\u2191NUM"
     GIT_PROMPT_BEHIND="\u2193NUM"
     GIT_PROMPT_MERGING="\u2211"
-    GIT_PROMPT_COLOR="%{$fg[red]%}"
+    GIT_PROMPT_COLOR="%{$fg[cyan]%}"
     GIT_PROMPT_AHEAD_COLOR="%{$fg[green]%}"
     GIT_PROMPT_BEHIND_COLOR="%{$fg[yellow]%}"
     GIT_PROMPT_MERGING_COLOR="%{$fg[magenta]%}"
     GIT_PROMPT_MODIFIED="%{$fg[red]%}\u2717%{$reset_color%}"
     GIT_PROMPT_STAGED="%{$fg[green]%}\u2713%{$reset_color%}"
     GIT_PROMPT_UNTRACKED="%{$fg[yellow]%}\u2026%{$reset_color%}"
-    GIT_PROMPT_CLOSE="%{$fg_bold[white]%})%{$reset_color%}"
-    if [ $is_ubuntu -eq 1 ]
+    GIT_PROMPT_CLOSE="%{$fg_bold[yellow]%}]%{$reset_color%}"
+    if [ $offset -gt 0 ]
     then
         GIT_PROMPT_SYMBOL="$GIT_PROMPT_SYMBOL "
     fi
@@ -76,15 +77,15 @@ if [[ -n "$GIT_WHERE" ]]; then
     fi
 
     # Compose the final git status line
-    GIT_STRING="$GIT_PROMPT_OPEN$GIT_COLOR$GIT_PROMPT_SYMBOL${GIT_WHERE#(refs/heads/|tags/)}%{$reset_color%}"
+    GIT_STRING="$GIT_PROMPT_OPEN$GIT_COLOR$GIT_PROMPT_SYMBOL${GIT_WHERE#(refs/heads/|tags/)}%{$reset_color%}$GIT_PROMPT_CLOSE"
     if [[ -n $GIT_STATE ]]; then
-        GIT_STRING="$GIT_STRING $GIT_STATE"
+        GIT_STRING="$GIT_STRING$GIT_PROMPT_OPEN$GIT_STATE$GIT_PROMPT_CLOSE"
     fi
 
     if [ $is_zsh -eq 1 ]; then
-        echo "$GIT_STRING$GIT_PROMPT_CLOSE"
+        echo "$GIT_STRING"
     else
-        echo "$GIT_STRING$GIT_PROMPT_CLOSE" | sed -e s/%}//g -e s/%{//g
+        echo "$GIT_STRING" | sed -e s/%}//g -e s/%{//g
     fi
 fi
 
