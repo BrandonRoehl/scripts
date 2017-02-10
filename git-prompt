@@ -8,6 +8,8 @@ GIT_WHERE="$(git symbolic-ref -q HEAD 2> /dev/null \
 if [[ -n "$GIT_WHERE" ]]; then
     is_zsh=0
     offset=0
+    padleft=0
+    padright=0
     while [ $# -ne 0 ]
     do
         case "$1" in
@@ -17,6 +19,12 @@ if [[ -n "$GIT_WHERE" ]]; then
             '-s')
                 shift
                 offset=$1
+                ;;
+            '-l')
+                padleft=1
+                ;;
+            '-r')
+                padright=1
                 ;;
         esac
         shift
@@ -78,8 +86,17 @@ if [[ -n "$GIT_WHERE" ]]; then
 
     # Compose the final git status line
     GIT_STRING="$GIT_PROMPT_OPEN$GIT_COLOR$GIT_PROMPT_SYMBOL${GIT_WHERE#(refs/heads/|tags/)}%{$reset_color%}$GIT_PROMPT_CLOSE"
-    if [[ -n $GIT_STATE ]]; then
+    if [[ -n $GIT_STATE ]]
+    then
         GIT_STRING="$GIT_STRING$GIT_PROMPT_OPEN$GIT_STATE$GIT_PROMPT_CLOSE"
+    fi
+    if [ $padleft -eq 0 ]
+    then
+        GIT_STRING=" $GIT_STRING"
+    fi
+    if [ $padright -eq 1 ]
+    then
+        GIT_STRING="$GIT_STRING "
     fi
 
     if [ $is_zsh -eq 1 ]; then
