@@ -90,7 +90,7 @@ if [[ -n "$GIT_WHERE" ]]; then
     then
         GIT_STRING="$GIT_STRING$GIT_PROMPT_OPEN$GIT_STATE$GIT_PROMPT_CLOSE"
     fi
-    if [ $padleft -eq 0 ]
+    if [ $padleft -eq 1 ]
     then
         GIT_STRING=" $GIT_STRING"
     fi
