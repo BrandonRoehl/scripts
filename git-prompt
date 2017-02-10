@@ -88,7 +88,7 @@ if [[ -n "$GIT_WHERE" ]]; then
     GIT_STRING="$GIT_PROMPT_OPEN$GIT_COLOR$GIT_PROMPT_SYMBOL${GIT_WHERE#(refs/heads/|tags/)}%{$reset_color%}$GIT_PROMPT_CLOSE"
     if [[ -n $GIT_STATE ]]
     then
-        GIT_STRING="$GIT_STRING$GIT_PROMPT_OPEN$GIT_STATE$GIT_PROMPT_CLOSE"
+        GIT_STRING="$GIT_PROMPT_OPEN$GIT_STATE$GIT_PROMPT_CLOSE$GIT_STRING"
     fi
     if [ $padleft -eq 1 ]
     then
