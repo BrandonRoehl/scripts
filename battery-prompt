@@ -50,14 +50,34 @@ battery_graph() {
 battery_color() {
     status=$(battery_status)
     if [[ $status =~ (^charging) ]]; then
-        echo -e '\033[0;32m'
+        if [[ "$1" == 'tmux' ]]; then
+            echo '#[fg=green]'
+        else
+            echo -e '\033[0;32m'
+        fi
     else
         tmp=$(battery_percent)
         percent=${tmp%?}
         if [ "$percent" -lt "25" ]; then
-            echo -e '\033[0;31m'
+            if [[ "$1" == 'tmux' ]]; then
+                echo '#[fg=red]'
+            else
+                echo -e '\033[0;31m'
+            fi
+        else
+            if [[ "$1" == 'tmux' ]]; then
+                echo '#[default]'
+            else
+                echo -e '\033[0m'
+            fi
         fi
     fi
+}
+battery_tmux() {
+    echo "$(battery_percent) $(battery_color tmux)$(battery_graph)#[default]"
+}
+battery_zsh() {
+    echo -e "$(battery_percent) %{$(battery_color)%}$(battery_graph)%{\033[0m%}"
 }
 
 if ! [ -z "$1" ]; then
