@@ -63,5 +63,5 @@ battery_color() {
 if ! [ -z "$1" ]; then
     eval "battery_$1"
 else
-    echo "$(battery_percent) $(battery_color)$(battery_graph)"
+    echo -e "$(battery_percent) $(battery_color)$(battery_graph)\033[0m"
 fi
