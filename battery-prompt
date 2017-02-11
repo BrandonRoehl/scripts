@@ -34,17 +34,17 @@ battery_graph() {
     tmp=$(battery_percent)
     percent=${tmp%?}
 	if [ -z "$percent" ]; then
-		echo ""
+		echo ''
 	elif [ "$percent" -lt "20" ]; then
-		echo "▁"
+		echo '▁'
 	elif [ "$percent" -lt "40" ]; then
-		echo "▂"
+		echo '▂'
 	elif [ "$percent" -lt "60" ]; then
-		echo "▃"
+		echo '▃'
 	elif [ "$percent" -lt "80" ]; then
-		echo "▅"
+		echo '▅'
 	else
-		echo "▇"
+		echo '▇'
 	fi
 }
 battery_color() {
