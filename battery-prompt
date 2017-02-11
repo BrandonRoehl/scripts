@@ -35,16 +35,22 @@ battery_graph() {
     percent=${tmp%?}
 	if [ -z "$percent" ]; then
 		echo ''
-	elif [ "$percent" -lt "20" ]; then
-		echo '▁'
-	elif [ "$percent" -lt "40" ]; then
-		echo '▂'
-	elif [ "$percent" -lt "60" ]; then
-		echo '▃'
-	elif [ "$percent" -lt "80" ]; then
-		echo '▅'
+	elif [ "$percent" -lt "13" ]; then
+		echo '▁' # one eighth
+	elif [ "$percent" -lt "25" ]; then
+		echo '▂' # one quarter
+	elif [ "$percent" -lt "38" ]; then
+		echo '▃' # three eigths
+	elif [ "$percent" -lt "50" ]; then
+		echo '▄' # half
+	elif [ "$percent" -lt "63" ]; then
+		echo '▅' # five eighths
+	elif [ "$percent" -lt "75" ]; then
+		echo '▆' # three quarters
+	elif [ "$percent" -lt "88" ]; then
+		echo '▇' # seven eighths
 	else
-		echo '▇'
+		echo '█' # one
 	fi
 }
 battery_color() {
