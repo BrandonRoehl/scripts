@@ -6,4 +6,5 @@ cd ${dotdir/\/zshrc/}
 brew list > installed.txt
 git submodule foreach 'git checkout master; git pull;'
 cd $currentPath
+echo ''
 universe update
